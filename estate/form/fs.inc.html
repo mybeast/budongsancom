@@ -1,0 +1,30 @@
+<!--fs:서비스항목-->
+<div><h2>서비스선택</h2></div>
+<table width="100%" cellpadding="5" cellspacing="0" class="basicTable2">
+	<col width="120" />
+	<col />
+	<tbody align="center">
+	<?php
+	echo $rankup_estate->print_service_contents(array(
+		'entry_wrap' => array('<tr valign="top">', "</tr>"),
+		'entry' => '
+			{:position:}
+			<td class="border" bgcolor="#fafafa" valign="middle"><input type="checkbox" name="service[]" value="{:value:}" id="service_{:value:}" class="none"{:registable:}></td>
+			<td align="left" style="line-height:150%" class="end border">
+				<label for="service_{:value:}">
+					<b>{:name:}</b><br />
+					{:memo:}
+					{:on_registerd:}
+				</label>
+			</td>',
+		'position' => '
+			<td rowspan="{:rowspan:}" class="border" bgcolor="#f7f7f7" valign="middle" style="display:none"><b>{:position:}</b></td>
+			<td rowspan="{:rowspan:}" class="border" style="display:none">
+				<img src="../images/ss_{:kind:}.gif" align="absmiddle" alt="{:position:} 캡처이미지">
+			</td>',
+		'registable' => ' disabled checked',
+		'on_registerd' => '<div style="color:#3399CC">&lt;등록중인 서비스입니다&gt;</div>'
+	));
+	?>
+	</tbody>
+</table>

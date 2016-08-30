@@ -1,0 +1,117 @@
+<?php
+/*
+ * 부동산매물 상세정보 항목정의
+ * @note: 특별한 이유가 없을 경우 삭제 및 변형 금지
+ */
+$fields = array(
+#######################################################################################
+#현전세금
+'i01' => '<input type="text" name="cm_deposit" value="{:value:}" size="8" maxlength="6" class="simpleform"{:required:} hname="현전세금" option="number"> 만원',
+
+#현보증금/현월세
+'i02' => '<input type="text" name="cm_warrant" value="{:cm_warrant:}" size="8" maxlnegth="6" class="simpleform"{:required:} hname="현보증금" option="number"> 만원 / <input type="text" name="cm_rent" value="{:cm_rent:}" size="8" maxlnegth="6" class="simpleform"{:required:} hname="현월세" option="number"> 만원 (매매 경우에만 노출 됩니다)',
+
+#시공사
+'i03' => '<input type="text" name="build" value="{:value:}" size="30" maxlength="20" class="simpleform"{:required:} hname="시공사">',
+
+#준공년월
+'i04' => '<select name="build_year"{:required:} hname="준공년도"><option value="">선택</option>{:years:}</select> <select name="build_month"{:required:} hname="준공월"><option value="">선택</option>{:months:}</select>',
+
+#단지규모
+'i05' => '<input type="text" name="scale" value="{:value:}" size="30" maxlength="20" class="simpleform"{:required:} hname="단지규모">',
+
+#입주가능일
+'i06' => '<span><input type="text" id="livein_date" name="livein_date" value="{:value:}"{:required:} hname="입주가능일" mindate="'.date("Y-m-d").'" readOnly onClick="rankup_calendar.draw_calendar(this)" class="simpleform" size="10" style="cursor:pointer"></span> 이후가능 <input type="checkbox" name="immediately"{:checked:} id="immediately" class="none" onClick="rankup_estate.check_livein(this, \'livein_date\')"> <label for="immediately">즉시입주가능</label><script type="text/javascript">rankup_estate.check_livein($(\'immediately\'), \'livein_date\')</script>',
+
+#방수/욕실
+'i07' => '<input type="text" name="room" value="{:room:}" size="5" maxlength="2" class="simpleform"{:required:} hname="방수" option="number"> 개 / <input type="text" name="bathroom" value="{:bathroom:}" size="5" maxlength="2" class="simpleform"{:required:} hname="욕실수" option="number"> 개',
+
+#방향
+'i08' => '<input type="text" name="facing" value="{:value:}" size="15" maxlength="10" class="simpleform"{:required:} hname="방향">',
+
+#주차대수
+'i09' => '<input type="text" name="parking" value="{:value:}" size="5" maxlength="2" class="simpleform"{:required:} hname="주차대수" option="number"> 대',
+
+#난방방식/난방형태
+'i10' => '<select name="heating_form"{:required:} hname="난방방식"><option value="">선택</option>{:heating_forms:}</select> / <select name="heating_fuel"{:required:} hname="난방형태"><option value="">선택</option>{:heating_fuels:}</select>',
+
+#난방형태 - 주택용
+'i11' => '<select name="heating_fuel"{:required:} hname="난방형태"><option value="">선택</option>{:heating_fuels:}</select>',
+
+#현관구조
+'i12' => '<select name="door_style"{:required:} hname="현관구조"><option value="">선택</option>{:options:}</select>',
+
+#편의시설
+'i13' => '<textarea type="editor" name="convenient"{:required:} hname="편의시설" style="width:100%;height:200px" nofocus>{:value:}</textarea>',
+
+#교육시설
+//'i14' => '<textarea type="editor" name="educational"{:required:} hname="교육시설" style="width:100%;height:200px" nofocus>{:value:}</textarea>',
+'i14' => '<input type="text" name="educational"{:required:} value="{:value:}" hname="주변시설" size="100" class="simpleform">',
+
+#옵션 - 추가설정 有
+'i15' => array(
+	'field' => 'additions',
+	'entry' => ' <nobr><input type="checkbox" name="addition[]"{:required:} hname="옵션" value="{:value:}"{:checked:} id="addition_{:key:}" class="none"> <label for="addition_{:key:}">{:text:}</label></nobr>'
+),
+
+#상가유형 - 추가설정 有
+'i16' => '<select name="store_type"{:required:} hname="상가유형"><option value="">선택</option>{:options:}</select>',
+
+#현업종
+'i17' => '<input type="text" name="c_kind" value="{:value:}" size="20" {:required:} hname="현업종" class="simpleform">',
+
+#추천업종
+'i18' => '<input type="text" name="r_kind" value="{:value:}" size="20" {:required:} hname="추천업종" class="simpleform">',
+
+#지목 - 추가설정 有
+'i19' => '<select name="land_class"{:required:} hname="지목"><option value="">선택</option>{:options:}</select>',
+
+#도시계획 - 추가설정 有
+'i20' => '<select name="cityplan"{:required:} hname="도시계획"><option value="">선택</option>{:options:}</select>',
+
+#추천용도
+'i21' => '<input type="text" name="r_use" value="{:value:}" size="20" {:required:} hname="추천용도" class="simpleform">',
+
+#관리비내역
+'i22' => '<input type="text" name="r_manage" value="{:value:}" {:required:} size="20" hname="관리비내역" class="simpleform">',
+
+
+#######################################################################################
+#교통 - 공통항목
+'c01' => array(
+	'vehicle' => '
+		<ul style="margin:0;list-style:none">
+			<li>지하철 : <select name="subway_1st" onChange="rankup_estate.get_subway(this)"><option value="">호선</option>{:subway_1st:}</select> <select name="subway_2nd"><option value="">역명</option>{:subway_2nd:}</select> <input type="text" name="subway_exit" value="{:subway_exit:}" size="5" maxlength="2" class="simpleform"> 번 출구</li>
+			<li style="margin-top:5px">버 &nbsp; 스 : <input type="text" name="bus_no" value="{:bus_no:}" size="15" maxlength="20" class="simpleform" hname="버스번호"> 번 <input type="text" name="bus_stop" value="{:bus_stop:}" size="15" maxlength="10" class="simpleform" hname="정류장"> 정류장, 도보 <input type="text" name="bus_distance" value="{:bus_distance:}" size="5" maxlength="6" hname="소요시간" option="number" class="simpleform"> 분 거리<span id="tip">+ 버스번호 콤바로 구분</span></li>
+		</ul>',
+	'map' => '
+		<hr style="height:1px;border-top:1px #ddd dotted" />
+		<ul style="list-style:none;margin:0;padding:0">
+			<li>
+				<div style="margin:5px 0">
+					위 &nbsp; 치<span id="tip">+ 기본정보의 소재지를 선택하시면 해당 지역으로 이동합니다. ( <u>위치를 설정하시면 매물상세 정보에 출력됩니다</u>)</span>
+					<span style="display:none">
+						<input type="hidden" id="mapx" name="mapx" value="{:on_mapx:}" message="지도상에 소재지의 위치를 선택하여 주십시오.">
+						<input type="hidden" id="mapy" name="mapy" value="{:on_mapy:}">
+						<input type="hidden" id="mapz" name="mapz" value="{:on_mapz:}">
+					</span>
+				</div>
+				<div id="mapBox" style="border:4px #3399FF solid">
+					<div id="mapContainer" style="border:1px #fff solid;width:100%;height:300px"></div>
+				</div>
+				<div id="mapapi"></div>
+			</li>
+		</ul>
+		<script type="text/javascript">
+		rankup_estate.map.set_coords({:mapx:}, {:mapy:}, {:mapz:});
+		if($F("mapx") && $F("mapy")) rankup_estate.map.marker = rankup_estate.map.make_marker($F("mapx"), $F("mapy"));
+		</script>'
+),
+
+#테마 - 공통항목
+'c02' => array(
+	'field' => 'theme',
+	'entry' => ' <nobr><input type="checkbox" name="theme[]"{:required:} hname="테마" value="{:value:}"{:checked:} id="theme_{:key:}" class="none"> <label for="theme_{:key:}">{:text:}</label></nobr>'
+)
+);
+?>

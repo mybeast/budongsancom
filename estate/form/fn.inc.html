@@ -1,0 +1,190 @@
+<!--fn:공통항목-->
+<div><h2>기타정보</h2></div>
+<table width="100%" cellpadding="0" cellspacing="0">
+	<tr>
+		<td><textarea type="editor" name="information" id="information" style="width:100%;height:250px"><?=$rows['information']?></textarea></td>
+	</tr>
+</table>
+<br />
+
+<div><h2>비공개메모</h2></div>
+<table width="100%" cellpadding="0" cellspacing="0">
+	<tr>
+		<td><textarea type="editor" name="memo" id="memo" style="width:100%;height:250px"><?=$rows['memo']?></textarea></td>
+	</tr>
+</table>
+<br />
+
+<div><h2>동영상정보</h2></div>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<?php
+// 동영상 선택
+if($rankup_estate->service_configs['use_ucc_api']=='yes') {
+?>
+	<tr>
+		<td>
+			<a onClick="rankup_estate.media.paste()"><img src="<?=$base_url?>images/btn_movie_tag.gif" align="absmiddle" alt="동영상태그입력"></a>
+			<a onClick="rankup_estate.media.open()"><img src="<?=$base_url?>images/btn_movie_up.gif" align="absmiddle" alt="동영상업로드"></a>
+			<input type="hidden" id="on_media" name="on_media" value="<?=$rows['on_media']?>" style="width:130px">
+		</td>
+	</tr>
+<?php
+}
+?>
+	<tr valign="top">
+		<td>
+			<textarea id="media" name="media" hname="동영상태그" style="width:100%;height:160px" class="simpleform"><?=$rows['media']?></textarea>
+			<table width="100%" cellpadding="0" cellspacing="0" style="margin:5px 0">
+				<tr valign="top">
+					<td id="tip" width="10">+</td>
+					<td id="tip">위의 입력란에 동영상 태그를 입력하십시오. 동영상 태그를 올바르게 입력하지 않을 경우 동영상이 재생되지 않습니다. ( <u>embed, object 만허용</u> )</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript"> rankup_estate.media.initialize('media', 'on_media') </script>
+<br />
+
+<!-- 사진등록 폼 -->
+<iframe name="subMultiProcessFrame" src="about:blank" style="width:100%;height:0px" frameborder="0" scrolling="0"></iframe>
+<div id="photo_frame" style="position:absolute;display:none;width:500px;height:200px;border:1px #777 solid;background-color:white;padding:10px;z-index:1">
+	<div style="height:26px;background-color:#9ABACB;border:1px #999 solid;padding:8px;margin-bottom:20px">
+		<ul style="margin:0;list-style:none;color:white">
+			<li style="float:left"><b>매물사진 등록/관리</b></li>
+			<li style="float:right"><b>|</b> <a onClick="rankup_estate.photo_hide()">닫기</a></li>
+		</ul>
+	</div>
+	<center>
+	<form name="photo_form" target="subMultiProcessFrame" method="POST" style="margin:0">
+	<input type="hidden" id="p_photo" name="p_photo" disabled required message="등록하실 사진을 선택하여 주십시오." nofocus>
+	<input type="hidden" id="mode" name="mode" disabled>
+	<input type="hidden" id="pno" name="pno">
+	<table width="95%" cellpadding="2" cellspacing="0" border="0">
+		<col width="135" />
+		<col />
+		<tr>
+			<td id="photo_preview" align="center" style="border:1px #ddd solid;height:110px;background-color:#f7f7f7"><img src="<?=$base_url?>images/no_95_65.gif" align="absmiddle" style="border:1px #eee solid; width:133px;height:114px"></td>
+			<td valign="top">
+				<table width="100%" height="100%" cellpadding="3" cellspacing="0" border="0" style="table-layout:fixed">
+					<col width="40">
+					<col>
+					<!--<tr>
+						<td align="right">제목</td>
+						<td><input type="text" id="p_subject" name="p_subject" hname="제목" style="width:100%" maxlength="50" class="simpleform"></td>
+					</tr>-->
+					<tr>
+						<td align="right">파일</td>
+						<td><input type="file" name="photo" style="width:100%;height:20px" class="simpleform no_line" filter="jpg,gif,png" onChange="rankup_estate.photo_post(this)"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td align="left"><div id="tip">( jpg, gif, png 파일만 첨부가능 )</div></td>
+					</tr>
+					<tr height="100%" valign="bottom">
+						<td colspan="2" align="center">
+							<a onClick="rankup_estate.photo_apply()"><img src="<?=$base_url?>Libs/_images/btn_regist.gif" align="absmiddle" alt="등록"></a>
+							<a onClick="rankup_estate.photo_hide()"><img src="<?=$base_url?>Libs/_images/btn_close.gif" align="absmiddle" alt="닫기"></a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	</form>
+	</center>
+</div>
+<script type="text/javascript"> rankup_estate.photo.initialize('photo_frame', 'photo_preview') </script>
+<!-- 사진등록 폼 -->
+
+<div><h2>사진정보</h2></div>
+<?
+include $root_path.'/swfupload/index.php';
+/*
+?>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed">
+<?php
+//@entry setting
+echo $rankup_estate->print_photo_contents($rows['photos'], array(
+	'times' => $rankup_estate->photo_column,
+	'entry_wrap' => array('<tr>', '</tr>'),
+	'entry' => array(
+		0 => '<td>&nbsp;</td>',
+		1 => '
+			<td>
+				<table id="photo_no{:index:}" width="100%" cellspacing="0" cellpadding="0" style="table-layout:fixed">
+					<tbody align="center">
+					<tr>
+						<td height="115" style="background-color:#f7f7f7;border:1px solid #bbb;"><img class="photo" src="{:photo:}"{:dimension:} align="absmiddle" style="border:1px #eee solid"></td>
+					</tr>
+					<!--<tr>
+						<td height="30"><a id="subject" onClick="rankup_estate.photo_open(this)">{:subject:}</a></td>
+					</tr>-->
+					<tr>
+						<td height="40" id="tools">
+							<span style="display:{:tool1:}"><a onClick="rankup_estate.photo_open(this)"><img src="../../images/btn_rig_pic.gif" align="absmiddle"></a></span>
+							<span style="display:{:tool2:}"><a onClick="rankup_estate.photo_open(this)"><img src="../../images/btn_rig_modify.gif" align="absmiddle"></a><a onClick="rankup_estate.photo_delete(this)"><img src="../../images/btn_rig_del.gif" align="absmiddle"></a></span>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<input type="hidden" name="on_subject[]" value="{:on_subject:}" style="width:100%">
+				<input type="hidden" name="on_photo[]" value="{:on_photo:}" style="width:100%">
+			</td>',
+		2 => '<tr><td height="5"></td></tr>',
+		3 => '<td width="5" style="font-size:1px;line-height:1px;padding:0"></td>'
+	),
+	'no_photo' => $rankup_estate->base_url.'images/no_95_65.gif', // 빈사진
+	'no_subject' => '제목등록' // 빈제목
+));
+?>
+</table>
+<? */ ?>
+<br />
+
+<div style="float:left"><h2 style="display:inline;margin:4px 5px">등록자정보</h2></div>
+<?php
+if($is_admin==true) {
+?>
+<div style="float:right">
+	<select onChange="rankup_estate.manager_load(this.value)">
+	<option value="">중개업자선택</option>
+	<?=$rankup_estate->print_agency_contents(true, '<option value="{:uid:}">{:company:} {:name:} ({:uid:})</option>')?>
+	</select>
+</div>
+<?php
+}
+?>
+<table width="100%" cellpadding="5" cellspacing="0" border="0" class="basicTable2">
+	<col width="120">
+	<col>
+	<col width="120">
+	<col width="30%">
+	<tr>
+		<th class="color_bg left">회사명<?=$required?></th>
+		<td class="border"><input type="text" id="company" name="company" value="<?=$rows['company']?>" required hname="회사명" size="25" maxlength="15" class="simpleform"></td>
+		<th class="color_bg left">담당자<?=$required?></th>
+		<td class="end border"><input type="text" id="manager" name="manager" value="<?=$rows['manager']?>" required hname="담당자" size="15" maxlength="10" class="simpleform"></td>
+	</tr>
+	<tr>
+		<th class="color_bg left">전화번호<?=$required?></th>
+		<td class="border">
+			<input type="text" id="phone1" name="phone1" value="<?=$rows['phone'][0]?>" hname="전화번호" size="5" maxlength="4" keyNum="phone_3rd_digit"  span="3" or="hphone1" class="simpleform"> -
+			<input type="text" id="phone2" name="phone2" value="<?=$rows['phone'][1]?>" size="5" maxlength="4" class="simpleform"><span id="phone_3rd_digit"> -
+			<input type="text" id="phone3" name="phone3" value="<?=$rows['phone'][2]?>" size="5" maxlength="4" class="simpleform"></span>
+		</td>
+		<th class="color_bg left">휴대전화</th>
+		<td class="end border">
+			<input type="text" id="hphone1" name="hphone1" value="<?=$rows['hphone'][0]?>" hname="휴대전화" size="5" maxlength="4" span="3" class="simpleform"> -
+			<input type="text" id="hphone2" name="hphone2" value="<?=$rows['hphone'][1]?>" size="5" maxlength="4" class="simpleform"> -
+			<input type="text" id="hphone3" name="hphone3" value="<?=$rows['hphone'][2]?>" size="5" maxlength="4" class="simpleform">
+		</td>
+	</tr>
+	<tr>
+		<th class="color_bg left">이메일<?=$required?></th>
+		<td colspan="3" class="end border">
+			<input type="text" id="email" name="email" value="<?=$rows['email']?>" required hname="이메일 주소" size="50" maxlength="50" class="simpleform">
+		</td>
+	</tr>
+</table>
+<script type="text/javascript"> setKeyNumber() </script>
